@@ -42,7 +42,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
     while( position < cueList.length){
         currentCue = cueList[position]
         if( currentCue.startTime >= currentCue.endTime){
-            console.log(" ERROR: For cue ID# " + currentCue.index + ", start-time must come before end-time");
+            console.log(" ERROR: For cue ID# " + String(currentCue.index + 1) + ", start-time must come before end-time");
             return -1;
         }
 
@@ -63,8 +63,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
         // If previousCue is a start-time
         // Case #1
         if( currentCue.startTime < previousCueItem.time && previousCueItem.stampType == "startTime"){
-            console.log(" ERROR: The start-time of cue ID# " + currentCue.index + 
-                        " cannot come before its previous cue, ID# " + previousCueIndex + ".");
+            console.log(" ERROR: The start-time of cue ID# " + String(currentCue.index + 1) + 
+                        " cannot come before its previous cue, ID# " + String(previousCueIndex + 1) + ".");
             return -1;
             
         }
@@ -87,8 +87,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                 continue;
             }
             
-            console.log(" ERROR: The end-time of cue ID# " + currentCue.index + 
-                        " extends beyond its parent cue, ID# " + previousCueIndex + ".");
+            console.log(" ERROR: The end-time of cue ID# " + String(currentCue.index + 1) +
+                        " extends beyond its parent cue, ID# " + String(previousCueIndex + 1) + ".");
             return -1;
         }
         // Case #3
@@ -119,8 +119,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
         // If previousCue is an end-time
         // Case #4
         if( currentCue.startTime < previousCueItem.time && previousCueItem.stampType == "endTime"){
-            console.log(" ERROR: The start-time of cue ID# " + currentCue.index + 
-                        " cannot come after its previous cue, ID# " + previousCueIndex + ".");
+            console.log(" ERROR: The start-time of cue ID# " + String(currentCue.index + 1) +
+                        " cannot come after its previous cue, ID# " + String(previousCueIndex + 1) + ".");
             return -1;
             
         }
