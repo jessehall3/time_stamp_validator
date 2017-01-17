@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>VTT To Table Of Contents</title>
+        <link rel="stylesheet" href="main.css" charset="utf-8">
+    </head>
+    <body>
+        <div class="row">
+            <div class="col vttField">
+                <div id="myLog">
+                    <!-- Will display console.log messages -->
+                </div>
+                <!-- Any spacing from the left will through off the parser -->
+                <textarea>
+WEBVTT
+
+00:00:00.000 --> 00:15:00.000
+1. Animals
+
+00:00:00.000 --> 00:10:00.000
+1.1 Mammals
+
+00:00:00.000 --> 00:05:00.000
+1.1.1 Dolphins
+
+00:00:05.000 --> 00:10:00.000
+1.1.2 Foxes
+
+00:00:10.000 --> 00:15:00.000
+1.2 Fish
+
+00:00:15.000 --> 00:20:00.000
+2. Plants
+
+00:00:15.000 --> 00:20:00.000
+2.1 Trees
+                </textarea>
+                <br>
+                <button>
+                    Submit
+                </button>
+            </div>
+            <div class="col">
+                <h1>Table of Contents</h1>
+                <div id="contents">
+                </div>
+            </div>
+        </div>
+<script src='jquery-1.8.2.min.js'></script>
+<!-- vtt.js is Mozilla's parser -->
+<script src="vtt.js"></script>
+<script src="nestedCueValidator.js"></script>
+<script src="nestedCuesToHtml.js"></script>
+<script type="text/javascript">
+var vttText="";
+$('button').click(function() {
+    // This pertains to Mozilla's vtt.js
+    var parser = new WebVTT.Parser(window, WebVTT.StringDecoder()),
+        cues = [],
+        regions = [];
+    parser.oncue = function(cue) {
+      cues.push(cue);
+    };
+    parser.onregion = function(region) {
+      regions.push(region);
+    }
+    
+    vttText = $("textarea").val()
+    // Parse with Mozilla's parser
+    // cues or now in an arry called "cues"
+    // see several lines above
+    parser.parse(vttText);
+    // necessary after all text has been parsed
+    parser.flush();
+    // uncomment to see cues returned from parser
+    // console.log(cues);
+    
+    // this for-loop just modifies the previous cues slightly
+    // this is just for the convenience of this demo
+    var cueList = [];
+    for( var i=0; i<cues.length; i++){
+        // startTime is multiplied by sixtey to match units of endTime 
+        cueList.push( new Cue(i, cues[i].startTime*60, cues[i].endTime, cues[i].text));
+        
+    }
+    
+    // From: nestedCueValidator.js
+    // run the cues through a validation algorithm and return
+    // an array of nested cues
+    var nestedCues = validate_and_return_array_of_nested_cues(cueList);
+    
+    // From: nestedCuesToHtml.js
+    // convert nested cues object to HTML
+    // which will be nest UL's
+    var $tableOfContents = nestedCuesToHtml(nestedCues);
+    
+    // inject new table of contents into the DOM
+    $("#contents").empty().append($tableOfContents);
+});
+
+// Convience assignment for logging console errors
+// from: http://stackoverflow.com/questions/16616722/sending-all-javascript-console-output-into-a-dom-element
+var former = console.log;
+console.log = function(msg){
+    $("#myLog").empty().append("<p>" + msg + "</p>");
+}
+</script>
+    </body>
+</html>
