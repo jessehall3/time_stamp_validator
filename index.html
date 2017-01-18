@@ -80,15 +80,16 @@ $('button').click(function() {
     // this is just for the convenience of this demo
     var cueList = [];
     for( var i=0; i<cues.length; i++){
-        // startTime is multiplied by sixtey to match units of endTime 
-        cueList.push( new Cue(i, cues[i].startTime*60, cues[i].endTime, cues[i].text));
-        
+        // startTime is multiplied by sixty to match units of endTime 
+        var newCue = new myCue(i, cues[i].startTime*60, cues[i].endTime, cues[i].text);
+        cueList.push( newCue);
     }
     
     // From: nestedCueValidator.js
     // run the cues through a validation algorithm and return
     // an array of nested cues
     var nestedCues = validate_and_return_array_of_nested_cues(cueList);
+    console.log(nestedCues);
 
     // From: nestedCuesToHtml.js
     // convert nested cues object to HTML

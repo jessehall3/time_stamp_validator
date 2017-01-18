@@ -1,10 +1,10 @@
-var Cue = function(id, start, end, text, children){
+var myCue = function(id, start, end, text, children){
     this.id = id;
     this.start = start;
     this.end = end;
     this.text = text || "";
     this.children = children || [];
-}
+};
 
 var validate_and_return_array_of_nested_cues = function(cueList){
     
@@ -42,7 +42,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
     while( position < cueList.length){
         currentCue = cueList[position]
         if( currentCue.start >= currentCue.end){
-            console.log(" ERROR: For cue ID# " + String(currentCue.id + 1) + ", start-time must come before end-time");
+            console.log(" ERROR: For cue ID# " + currentCue.id + ", start-time must come before end-time");
             return -1;
         }
 
@@ -63,8 +63,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
         // If previousCue is a start-time
         // Case #1
         if( currentCue.start < previousCueItem.time && previousCueItem.stampType == "start"){
-            console.log(" ERROR: The start-time of cue ID# " + String(currentCue.id + 1) + 
-                        " cannot come before its previous cue, ID# " + String(previousCueId + 1) + ".");
+            console.log(" ERROR: The start-time of cue ID# " + currentCue.id + 
+                        " cannot come before its previous cue, ID# " + previousCueId + ".");
             return -1;
             
         }
@@ -87,8 +87,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                 continue;
             }
             
-            console.log(" ERROR: The end-time of cue ID# " + String(currentCue.id + 1) +
-                        " extends beyond its parent cue, ID# " + String(previousCueId + 1) + ".");
+            console.log(" ERROR: The end-time of cue ID# " + currentCue.id +
+                        " extends beyond its parent cue, ID# " + previousCueId + ".");
             return -1;
         }
         // Case #3
@@ -119,8 +119,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
         // If previousCue is an end-time
         // Case #4
         if( currentCue.start < previousCueItem.time && previousCueItem.stampType == "end"){
-            console.log(" ERROR: The start-time of cue ID# " + String(currentCue.id + 1) +
-                        " cannot come after its previous cue, ID# " + String(previousCueId + 1) + ".");
+            console.log(" ERROR: The start-time of cue ID# " + currentCue.id +
+                        " cannot come after its previous cue, ID# " + previousCueId + ".");
             return -1;
             
         }
