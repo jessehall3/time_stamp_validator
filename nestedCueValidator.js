@@ -1,7 +1,7 @@
-var Cue = function(index, startTime, endTime, text, children){
+var Cue = function(index, start, end, text, children){
     this.index = index;
-    this.startTime = startTime;
-    this.endTime = endTime;
+    this.start = start;
+    this.end = end;
     this.text = text || "";
     this.children = children || [];
 }
@@ -19,7 +19,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
             // there are no open parent cues
             return true;
         }
-        return childCue.endTime <= rhsCueItem.time
+        return childCue.end <= rhsCueItem.time
     };
     
     var CueItem = function(cue, type){
@@ -41,14 +41,14 @@ var validate_and_return_array_of_nested_cues = function(cueList){
     
     while( position < cueList.length){
         currentCue = cueList[position]
-        if( currentCue.startTime >= currentCue.endTime){
+        if( currentCue.start >= currentCue.end){
             console.log(" ERROR: For cue ID# " + String(currentCue.index + 1) + ", start-time must come before end-time");
             return -1;
         }
 
         if( position == 0 ){
-            lhs.push( new CueItem(currentCue, 'startTime' ) );
-            rhs.push( new CueItem(currentCue, 'endTime' ) );
+            lhs.push( new CueItem(currentCue, 'start' ) );
+            rhs.push( new CueItem(currentCue, 'end' ) );
             
             nestedCues.push(currentCue);
             
@@ -62,14 +62,14 @@ var validate_and_return_array_of_nested_cues = function(cueList){
 
         // If previousCue is a start-time
         // Case #1
-        if( currentCue.startTime < previousCueItem.time && previousCueItem.stampType == "startTime"){
+        if( currentCue.start < previousCueItem.time && previousCueItem.stampType == "start"){
             console.log(" ERROR: The start-time of cue ID# " + String(currentCue.index + 1) + 
                         " cannot come before its previous cue, ID# " + String(previousCueIndex + 1) + ".");
             return -1;
             
         }
         // Case #2
-        if( currentCue.startTime == previousCueItem.time && previousCueItem.stampType == "startTime"){
+        if( currentCue.start == previousCueItem.time && previousCueItem.stampType == "start"){
             if( isValidNest( currentCue, rhs[rhs.length-1] ) ){
                 if( rhs.length ){
                  parentIndex = rhs[rhs.length-1].index;
@@ -80,8 +80,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                     nestedCues.push(currentCue);
                 }
                 
-                lhs.push( new CueItem(currentCue, 'startTime' ) );
-                rhs.push( new CueItem(currentCue, 'endTime' ) );
+                lhs.push( new CueItem(currentCue, 'start' ) );
+                rhs.push( new CueItem(currentCue, 'end' ) );
                 
                 position++;
                 continue;
@@ -92,7 +92,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
             return -1;
         }
         // Case #3
-        if( currentCue.startTime > previousCueItem.time && previousCueItem.stampType == "startTime"){
+        if( currentCue.start > previousCueItem.time && previousCueItem.stampType == "start"){
             if( isValidNest( currentCue, rhs[rhs.length-1] ) ){
                 if( rhs.length ){
                  parentIndex = rhs[rhs.length-1].index;
@@ -103,8 +103,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                     nestedCues.push(currentCue);
                 }
                 
-                lhs.push( new CueItem(currentCue, 'startTime' ) );
-                rhs.push( new CueItem(currentCue, 'endTime' ) );
+                lhs.push( new CueItem(currentCue, 'start' ) );
+                rhs.push( new CueItem(currentCue, 'end' ) );
                 
                 position++;
                 continue;
@@ -118,14 +118,14 @@ var validate_and_return_array_of_nested_cues = function(cueList){
 
         // If previousCue is an end-time
         // Case #4
-        if( currentCue.startTime < previousCueItem.time && previousCueItem.stampType == "endTime"){
+        if( currentCue.start < previousCueItem.time && previousCueItem.stampType == "end"){
             console.log(" ERROR: The start-time of cue ID# " + String(currentCue.index + 1) +
                         " cannot come after its previous cue, ID# " + String(previousCueIndex + 1) + ".");
             return -1;
             
         }
         // Case #5 (and #6)
-        if( currentCue.startTime >= previousCueItem.time && previousCueItem.stampType == "endTime"){
+        if( currentCue.start >= previousCueItem.time && previousCueItem.stampType == "end"){
             if( isValidNest( currentCue, rhs[rhs.length-1] ) ){
                 if( rhs.length ){
                  parentIndex = rhs[rhs.length-1].index;
@@ -136,8 +136,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                     nestedCues.push(currentCue);
                 }
                 
-                lhs.push( new CueItem(currentCue, 'startTime' ) );
-                rhs.push( new CueItem(currentCue, 'endTime' ) );
+                lhs.push( new CueItem(currentCue, 'start' ) );
+                rhs.push( new CueItem(currentCue, 'end' ) );
                 
                 position++;
                 continue;
