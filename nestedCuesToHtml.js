@@ -10,12 +10,12 @@ var nestedCuesToHtml = function(nestedCues){
             $newLi.text( cue.text );
             $ul.append($newLi)
             
-            if( cue.children.length ){
+            if( cue.nestedCueChildren.length ){
                 $newUl = $('<ul></ul>');
                 $newUl.attr('class', 'children');
                 $newLi.append($newUl);
                 
-                traverse(cue.children, $newUl)
+                traverse(cue.nestedCueChildren, $newUl)
             }
         }
     }

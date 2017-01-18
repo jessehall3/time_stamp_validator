@@ -1,9 +1,9 @@
-var myCue = function(id, start, end, text, children){
+var myCue = function(id, start, end, text, nestedCueChildren){
     this.id = id;
     this.start = start;
     this.end = end;
     this.text = text || "";
-    this.children = children || [];
+    this.nestedCueChildren = nestedCueChildren || [];
 };
 
 var validate_and_return_array_of_nested_cues = function(cueList){
@@ -74,7 +74,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                 if( rhs.length ){
                  parentIndex = rhs[rhs.length-1].id;
                  parentCue = cueList[parentIndex];
-                 parentCue.children.push(currentCue);
+                 parentCue.nestedCueChildren.push(currentCue);
                 }
                 else{
                     nestedCues.push(currentCue);
@@ -97,7 +97,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                 if( rhs.length ){
                  parentIndex = rhs[rhs.length-1].id;
                  parentCue = cueList[parentIndex];
-                 parentCue.children.push(currentCue);
+                 parentCue.nestedCueChildren.push(currentCue);
                 }
                 else{
                     nestedCues.push(currentCue);
@@ -130,7 +130,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                 if( rhs.length ){
                  parentIndex = rhs[rhs.length-1].id;
                  parentCue = cueList[parentIndex];
-                 parentCue.children.push(currentCue);
+                 parentCue.nestedCueChildren.push(currentCue);
                 }
                 else{
                     nestedCues.push(currentCue);
