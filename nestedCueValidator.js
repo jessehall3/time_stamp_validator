@@ -16,6 +16,14 @@ var startOfCurrBeforeStartOfPreMessage = function(currentCue, previousCueId){
                 " cannot come before the start-time of its previous cue, ID# " + String(previousCueId + 1) + ".";
 
 }
+var overReachingCueMessage = function(currentCue, previousCueId){
+    return "ERROR: Cue ID# " + String(currentCue.id + 1) + 
+            " must either be contained by its previous cue, " + 
+            "where the start and end-times are greater than or equal those of the previous cue. \
+            Or both its start and end-times must come after those of the previous cue"
+}
+
+
 
 var validate_and_return_array_of_nested_cues = function(cueList){
     
@@ -96,9 +104,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                 continue;
             }
             
-            console.log(" ERROR: The end-time of cue ID# " + currentCue.id +
-                        " extends beyond the end-time of its parent cue, ID# " + previousCueId + ".");
-            return -1;
+            console.log(overReachingCueMessage(currentCue, previousCueId));
+            return overReachingCueMessage(currentCue, previousCueId);
         }
         // Case #3
         if( currentCue.start > previousCueItem.time && previousCueItem.stampType == "start"){
@@ -128,14 +135,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
         // If previousCue is an end-time
         // Case #4
         if( currentCue.start < previousCueItem.time && previousCueItem.stampType == "end"){
-            // TODO: Might not ever reach this case. Will revisit.
-            // This case should be caught and handled within the previous cases.
-            // In this case the end-time of the current cue is after the end-time of the previous cue.
-            // But the start-time of the current cue is before the end-time of the previous cue.
-            console.log(" ERROR: The start-time of cue ID# " + currentCue.id +
-                        " cannot come before the end-time of its previous cue, ID# " + previousCueId + ".");
-            return -1;
-            
+            console.log(overReachingCueMessage(currentCue, previousCueId));
+            return overReachingCueMessage(currentCue, previousCueId);
         }
         // Case #5 (and #6)
         if( currentCue.start >= previousCueItem.time && previousCueItem.stampType == "end"){
