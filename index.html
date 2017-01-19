@@ -15,25 +15,25 @@
                 <textarea>
 WEBVTT
 
-00:00:00.000 --> 00:15:00.000
+00:00:00.000 --> 00:00:15.000
 1. Animals
 
-00:00:00.000 --> 00:10:00.000
+00:00:00.000 --> 00:00:10.000
 1.1 Mammals
 
-00:00:00.000 --> 00:05:00.000
+00:00:00.000 --> 00:00:05.000
 1.1.1 Dolphins
 
-00:00:05.000 --> 00:10:00.000
+00:00:05.000 --> 00:00:10.000
 1.1.2 Foxes
 
-00:00:10.000 --> 00:15:00.000
+00:00:10.000 --> 00:00:15.000
 1.2 Fish
 
-00:00:15.000 --> 00:20:00.000
+00:00:15.000 --> 00:00:20.000
 2. Plants
 
-00:00:15.000 --> 00:20:00.000
+00:00:15.000 --> 00:00:20.000
 2.1 Trees
                 </textarea>
                 <br>
@@ -81,7 +81,7 @@ $('button').click(function() {
     var cueList = [];
     for( var i=0; i<cues.length; i++){
         // startTime is multiplied by sixty to match units of endTime 
-        var newCue = new myCue(i, cues[i].startTime*60, cues[i].endTime, cues[i].text);
+        var newCue = new myCue(i, cues[i].startTime, cues[i].endTime, cues[i].text);
         cueList.push( newCue);
     }
     
