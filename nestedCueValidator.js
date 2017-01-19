@@ -6,11 +6,22 @@ var myCue = function(id, start, end, text, nestedCueChildren){
     this.nestedCueChildren = nestedCueChildren || [];
 };
 
+//error messages
+var noCuesGivenMessage = "No cues were given.";
+var startBeforeEndMessage = function(currentCue){
+    return " ERROR: For cue ID# " + String(currentCue.id + 1) + ", start-time must come before end-time.";
+}
+var startOfCurrBeforeStartOfPreMessage = function(currentCue, previousCueId){
+    return " ERROR: The start-time of cue ID# " + String(currentCue.id + 1) + 
+                " cannot come before the start-time of its previous cue, ID# " + String(previousCueId + 1) + ".";
+
+}
+
 var validate_and_return_array_of_nested_cues = function(cueList){
     
     if( cueList.length < 1 ){
-        console.log("The cue list is empty.");
-        return -1;
+        console.log(noCuesGivenMessage);
+        return emptyCueListMessage;
     }
     
     var isValidNest = function( childCue, rhsCueItem ){
@@ -42,8 +53,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
     while( position < cueList.length){
         currentCue = cueList[position]
         if( currentCue.start >= currentCue.end){
-            console.log(" ERROR: For cue ID# " + currentCue.id + ", start-time must come before end-time");
-            return -1;
+            console.log(startBeforeEndMessage(currentCue));
+            return startBeforeEndMessage(currentCue);
         }
 
         if( position == 0 ){
@@ -63,10 +74,8 @@ var validate_and_return_array_of_nested_cues = function(cueList){
         // If previousCue is a start-time
         // Case #1
         if( currentCue.start < previousCueItem.time && previousCueItem.stampType == "start"){
-            console.log(" ERROR: The start-time of cue ID# " + currentCue.id + 
-                        " cannot come before its previous cue, ID# " + previousCueId + ".");
-            return -1;
-            
+            console.log(startOfCurrBeforeStartOfPreMessage(currentCue, previousCueId));
+            return startOfCurrBeforeStartOfPreMessage(currentCue, previousCueId);
         }
         // Case #2
         if( currentCue.start == previousCueItem.time && previousCueItem.stampType == "start"){
@@ -88,7 +97,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
             }
             
             console.log(" ERROR: The end-time of cue ID# " + currentCue.id +
-                        " extends beyond its parent cue, ID# " + previousCueId + ".");
+                        " extends beyond the end-time of its parent cue, ID# " + previousCueId + ".");
             return -1;
         }
         // Case #3
@@ -119,8 +128,12 @@ var validate_and_return_array_of_nested_cues = function(cueList){
         // If previousCue is an end-time
         // Case #4
         if( currentCue.start < previousCueItem.time && previousCueItem.stampType == "end"){
+            // TODO: Might not ever reach this case. Will revisit.
+            // This case should be caught and handled within the previous cases.
+            // In this case the end-time of the current cue is after the end-time of the previous cue.
+            // But the start-time of the current cue is before the end-time of the previous cue.
             console.log(" ERROR: The start-time of cue ID# " + currentCue.id +
-                        " cannot come after its previous cue, ID# " + previousCueId + ".");
+                        " cannot come before the end-time of its previous cue, ID# " + previousCueId + ".");
             return -1;
             
         }

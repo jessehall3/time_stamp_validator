@@ -8,7 +8,7 @@
     <body>
         <div class="row">
             <div class="col vttField">
-                <div id="myLog">
+                <div id="error">
                     <!-- Will display console.log messages -->
                 </div>
                 <!-- Any spacing from the left will through off the parser -->
@@ -80,7 +80,6 @@ $('button').click(function() {
     // this is just for the convenience of this demo
     var cueList = [];
     for( var i=0; i<cues.length; i++){
-        // startTime is multiplied by sixty to match units of endTime 
         var newCue = new myCue(i, cues[i].startTime, cues[i].endTime, cues[i].text);
         cueList.push( newCue);
     }
@@ -90,21 +89,29 @@ $('button').click(function() {
     // an array of nested cues
     var nestedCues = validate_and_return_array_of_nested_cues(cueList);
 
-    // From: nestedCuesToHtml.js
-    // convert nested cues object to HTML
-    // which will be nest UL's
-    var $tableOfContents = nestedCuesToHtml(nestedCues);
-    
-    // inject new table of contents into the DOM
-    $("#contents").empty().append($tableOfContents);
+    // nestedCues is an error message
+    if(typeof nestedCues == 'string'){
+        $("#error").empty().append("<p>" + nestedCues + "</p>");
+        $("#contents").empty()
+    }
+    else{
+        // From: nestedCuesToHtml.js
+        // convert nested cues object to HTML
+        // which will be nest UL's
+        var $tableOfContents = nestedCuesToHtml(nestedCues);
+        
+        // inject new table of contents into the DOM
+        $("#contents").empty().append($tableOfContents);
+        $("#error").empty()
+    }
 });
 
 // Convience assignment for logging console errors
 // from: http://stackoverflow.com/questions/16616722/sending-all-javascript-console-output-into-a-dom-element
-var former = console.log;
-console.log = function(msg){
-    $("#myLog").empty().append("<p>" + msg + "</p>");
-}
+// var former = console.log;
+// console.log = function(msg){
+//     $("#myLog").empty().append("<p>" + msg + "</p>");
+// }
 </script>
     </body>
 </html>
