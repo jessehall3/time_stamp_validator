@@ -20,7 +20,7 @@ var overReachingCueMessage = function(currentCue, previousCueId){
     return "ERROR: Cue ID# " + String(currentCue.id + 1) + 
             " must either be contained by its previous cue, " + 
             "where the start and end-times are greater than or equal those of the previous cue. \
-            Or both its start and end-times must come after those of the previous cue"
+            Or, both its start and end-times must come after those of the previous cue"
 }
 
 

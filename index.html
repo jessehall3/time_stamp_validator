@@ -106,12 +106,9 @@ $('button').click(function() {
     }
 });
 
-// Convience assignment for logging console errors
-// from: http://stackoverflow.com/questions/16616722/sending-all-javascript-console-output-into-a-dom-element
-// var former = console.log;
-// console.log = function(msg){
-//     $("#myLog").empty().append("<p>" + msg + "</p>");
-// }
+$(document).ready(function($) {
+    $('button')[0].click();
+});
 </script>
     </body>
 </html>
