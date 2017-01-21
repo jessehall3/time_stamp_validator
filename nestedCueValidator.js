@@ -18,9 +18,10 @@ var startOfCurrBeforeStartOfPreMessage = function(currentCue, previousCueId){
 }
 var overReachingCueMessage = function(currentCue, previousCueId){
     return "ERROR: Cue ID# " + String(currentCue.id + 1) + 
-            " must either be contained by its previous cue, " + 
-            "where the start and end-times are greater than or equal those of the previous cue. \
-            Or, both its start and end-times must come after those of the previous cue"
+            " must either be contained by its previous cue, ID# " +
+            + String(previousCueId + 1) +
+            ", where the start and end-times are greater than or equal to those of the previous cue." +
+            " Or, both its start and end-times must come after those of the previous cue."
 }
 
 
@@ -103,7 +104,7 @@ var validate_and_return_array_of_nested_cues = function(cueList){
                 position++;
                 continue;
             }
-            
+            // not a valid nest
             console.log(overReachingCueMessage(currentCue, previousCueId));
             return overReachingCueMessage(currentCue, previousCueId);
         }
