@@ -17,11 +17,11 @@ var startOfCurrBeforeStartOfPreMessage = function(currentCue, previousCueId){
 
 }
 var overReachingCueMessage = function(currentCue, previousCueId){
-    return "ERROR: Cue ID# " + String(currentCue.id + 1) + 
-            " must either be contained by its previous cue, ID# " +
-            + String(previousCueId + 1) +
-            ", where the start and end-times are greater than or equal to those of the previous cue." +
-            " Or, both its start and end-times must come after those of the previous cue."
+    return "ERROR: Cue ID# " + String(currentCue.id + 1)
+            + " must either be contained by its previous cue, ID# "
+            + String(previousCueId + 1)
+            + ", where the start and end-times are greater than or equal to those of the previous cue."
+            + " Or, both its start and end-times must come after those of the previous cue."
 }
 
 
