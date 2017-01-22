@@ -9,19 +9,25 @@ var myCue = function(id, start, end, text, nestedCueChildren){
 //error messages
 var noCuesGivenMessage = "No cues were given.";
 var startBeforeEndMessage = function(currentCue){
-    return " ERROR: For cue ID# " + String(currentCue.id + 1) + ", start-time must come before end-time.";
+    return " ERROR: For cue ID# "
+        + String(currentCue.id + 1) 
+        + ", start-time must come before end-time.";
 }
 var startOfCurrBeforeStartOfPreMessage = function(currentCue, previousCueId){
-    return " ERROR: The start-time of cue ID# " + String(currentCue.id + 1) + 
-                " cannot come before the start-time of its previous cue, ID# " + String(previousCueId + 1) + ".";
+    return " ERROR: The start-time of cue ID# "
+        + String(currentCue.id + 1)
+        + " cannot come before the start-time of its previous cue, ID# " 
+        + String(previousCueId + 1) + ".";
 
 }
 var overReachingCueMessage = function(currentCue, previousCueId){
     return "ERROR: Cue ID# " + String(currentCue.id + 1)
             + " must either be contained by its previous cue, ID# "
             + String(previousCueId + 1)
-            + ", where the start and end-times are greater than or equal to those of the previous cue."
-            + " Or, both its start and end-times must come after those of the previous cue."
+            + ", where the start and end-times are greater than"
+            + " or equal to those of the previous cue."
+            + " Or, both its start and end-times must come after"
+            + " those of the previous cue."
 }
 
 
